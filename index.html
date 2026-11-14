@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="color-scheme" content="light dark">
+<title>Metka</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M6 14 L20 4 L34 14 L34 32 a4 4 0 0 1 -4 4 L10 36 a4 4 0 0 1 -4 -4 Z' fill='%23f0c23b'/%3E%3Ccircle cx='20' cy='12' r='2.6' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<main>
+  <header class="brand">
+    <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
+      <path d="M6 14 L20 4 L34 14 L34 32 a4 4 0 0 1 -4 4 L10 36 a4 4 0 0 1 -4 -4 Z" fill="var(--tag)"/>
+      <circle cx="20" cy="12" r="2.6" fill="var(--bg)"/>
+      <path d="M12 24 h16 M12 29 h10" stroke="#1b1704" stroke-width="2" stroke-linecap="round"/>
+    </svg>
+    <div>
+      <h1>Metka</h1>
+      <p>Opisz ubranie, a pokażemy konkretne produkty.</p>
+    </div>
+  </header>
+
+  <section class="card" aria-labelledby="lbl-desc">
+    <div class="field">
+      <label id="lbl-desc" for="desc">Czego szukasz?</label>
+      <textarea id="desc" maxlength="400" placeholder="np. czarna bluza oversize z kapturem, bez nadruków, gruba bawełna"></textarea>
+    </div>
+    <div class="chips" id="examples" aria-label="Przykłady"></div>
+    <div class="row">
+      <div class="field grow">
+        <span class="label" id="lbl-who">Dla kogo</span>
+        <div class="chips" id="who" role="group" aria-labelledby="lbl-who"></div>
+      </div>
+      <div class="field budget">
+        <label for="budget">Budżet do (zł)</label>
+        <input id="budget" type="number" inputmode="numeric" min="0" step="10" placeholder="np. 200">
+      </div>
+    </div>
+    <div class="field" id="codeWrap" hidden>
+      <label for="code">Kod dostępu</label>
+      <input id="code" type="password" autocomplete="off" placeholder="Wpisz kod od właściciela aplikacji">
+    </div>
+    <div class="actions">
+      <button class="btn" id="go" type="button">Znajdź</button>
+      <button class="btn secondary" id="stop" type="button" hidden>Zatrzymaj</button>
+    </div>
+  </section>
+
+  <section id="out" aria-live="polite"></section>
+</main>
+<script src="/app.js"></script>
+</body>
+</html>
