@@ -1,58 +1,129 @@
 <!doctype html>
-<html lang="pl">
+<html lang="pl" data-theme="light">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="color-scheme" content="light dark">
+<meta name="apple-mobile-web-app-title" content="Metka">
+<meta name="theme-color" content="#ffffff">
 <title>Metka</title>
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 40 40'%3E%3Cpath d='M6 14 L20 4 L34 14 L34 32 a4 4 0 0 1 -4 4 L10 36 a4 4 0 0 1 -4 -4 Z' fill='%23f0c23b'/%3E%3Ccircle cx='20' cy='12' r='2.6' fill='%23fff'/%3E%3C/svg%3E">
+<link rel="icon" type="image/png" href="/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Space+Grotesk:wght@500;600;700&display=swap">
 <link rel="stylesheet" href="/style.css">
+<script src="/theme.js"></script>
 </head>
 <body>
 <main>
   <header class="brand">
-    <svg width="40" height="40" viewBox="0 0 40 40" aria-hidden="true">
-      <path d="M6 14 L20 4 L34 14 L34 32 a4 4 0 0 1 -4 4 L10 36 a4 4 0 0 1 -4 -4 Z" fill="var(--tag)"/>
+    <svg class="logo" width="44" height="44" viewBox="0 0 40 40" aria-hidden="true">
+      <path d="M6 14 L20 4 L34 14 L34 32 a4 4 0 0 1 -4 4 L10 36 a4 4 0 0 1 -4 -4 Z" fill="var(--logo)"/>
       <circle cx="20" cy="12" r="2.6" fill="var(--bg)"/>
-      <path d="M12 24 h16 M12 29 h10" stroke="#1b1704" stroke-width="2" stroke-linecap="round"/>
+      <path d="M12 24 h16 M12 29 h10" stroke="var(--logo-ink)" stroke-width="2" stroke-linecap="round"/>
     </svg>
     <div>
       <h1>Metka</h1>
-      <p>Opisz ubranie, a pokażemy konkretne produkty.</p>
+      <p id="greeting">Opisz ubranie, a pokażemy konkretne produkty.</p>
     </div>
   </header>
 
-  <section class="card" aria-labelledby="lbl-desc">
-    <div class="field">
-      <label id="lbl-desc" for="desc">Czego szukasz?</label>
-      <textarea id="desc" maxlength="400" placeholder="np. czarna bluza oversize z kapturem, bez nadruków, gruba bawełna"></textarea>
-    </div>
-    <div class="chips" id="examples" aria-label="Przykłady"></div>
-    <div class="row">
-      <div class="field grow">
-        <span class="label" id="lbl-who">Dla kogo</span>
-        <div class="chips" id="who" role="group" aria-labelledby="lbl-who"></div>
+  <nav class="tabs" role="tablist" aria-label="Sekcje aplikacji">
+    <button class="tab" type="button" role="tab" id="tab-szukaj" data-tab="szukaj" aria-controls="view-szukaj" aria-selected="true">Szukaj</button>
+    <button class="tab" type="button" role="tab" id="tab-ulubione" data-tab="ulubione" aria-controls="view-ulubione" aria-selected="false">Ulubione <span id="favCount" class="count-badge" hidden>0</span></button>
+    <button class="tab" type="button" role="tab" id="tab-opcje" data-tab="opcje" aria-controls="view-opcje" aria-selected="false">Opcje</button>
+  </nav>
+
+  <!-- SZUKAJ -->
+  <section id="view-szukaj" role="tabpanel" aria-labelledby="tab-szukaj" class="view">
+    <div class="card">
+      <div class="field">
+        <label id="lbl-desc" for="desc">Czego szukasz?</label>
+        <textarea id="desc" maxlength="400" placeholder="np. czarna bluza oversize z kapturem, bez nadruków, gruba bawełna"></textarea>
       </div>
-      <div class="field budget">
-        <label for="budget">Budżet do (zł)</label>
-        <input id="budget" type="number" inputmode="numeric" min="0" step="10" placeholder="np. 200">
+      <div class="chips" id="examples" aria-label="Przykłady"></div>
+
+      <fieldset class="opts">
+        <legend>Opcjonalnie</legend>
+        <div class="row">
+          <div class="field grow">
+            <span class="label" id="lbl-who">Dla kogo</span>
+            <div class="chips" id="who" role="group" aria-labelledby="lbl-who"></div>
+          </div>
+          <div class="field size">
+            <label for="size">Rozmiar</label>
+            <input id="size" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" placeholder="np. M, 42, 128">
+          </div>
+        </div>
+        <div class="row">
+          <div class="field money">
+            <label for="pmin">Cena od (zł)</label>
+            <input id="pmin" type="number" inputmode="numeric" min="0" step="10" placeholder="0">
+          </div>
+          <div class="field money">
+            <label for="pmax">Cena do (zł)</label>
+            <input id="pmax" type="number" inputmode="numeric" min="0" step="10" placeholder="bez limitu">
+          </div>
+        </div>
+      </fieldset>
+
+      <div class="field" id="codeWrap" hidden>
+        <label for="code">Kod dostępu</label>
+        <input id="code" type="password" autocomplete="off" placeholder="Wpisz kod od właściciela aplikacji">
+      </div>
+      <div class="actions">
+        <button class="btn" id="go" type="button">Znajdź</button>
+        <button class="btn secondary" id="stop" type="button" hidden>Zatrzymaj</button>
       </div>
     </div>
-    <div class="field" id="codeWrap" hidden>
-      <label for="code">Kod dostępu</label>
-      <input id="code" type="password" autocomplete="off" placeholder="Wpisz kod od właściciela aplikacji">
-    </div>
-    <div class="actions">
-      <button class="btn" id="go" type="button">Znajdź</button>
-      <button class="btn secondary" id="stop" type="button" hidden>Zatrzymaj</button>
-    </div>
+    <div id="out" aria-live="polite"></div>
   </section>
 
-  <section id="out" aria-live="polite"></section>
+  <!-- ULUBIONE -->
+  <section id="view-ulubione" role="tabpanel" aria-labelledby="tab-ulubione" class="view" hidden>
+    <div id="favOut"></div>
+  </section>
+
+  <!-- OPCJE -->
+  <section id="view-opcje" role="tabpanel" aria-labelledby="tab-opcje" class="view" hidden>
+    <div class="card">
+      <h2>Profil użytkownika</h2>
+      <div class="field">
+        <label for="opt-name">Imię</label>
+        <input id="opt-name" type="text" maxlength="30" autocomplete="given-name" placeholder="Jak mamy się do Ciebie zwracać?">
+      </div>
+      <div class="field">
+        <span class="label" id="lbl-opt-who">Domyślnie szukam dla</span>
+        <div class="chips" id="opt-who" role="group" aria-labelledby="lbl-opt-who"></div>
+      </div>
+      <div class="field size">
+        <label for="opt-size">Domyślny rozmiar</label>
+        <input id="opt-size" type="text" maxlength="12" autocomplete="off" autocapitalize="characters" placeholder="np. M, 42, 128">
+      </div>
+      <p class="hint" id="profileSaved" role="status">Te dane podpowiadają się w wyszukiwaniu. Możesz je zmienić przy każdym szukaniu.</p>
+    </div>
+
+    <div class="card">
+      <h2>Motyw</h2>
+      <div class="chips" id="opt-theme" role="group" aria-label="Motyw aplikacji"></div>
+    </div>
+
+    <div class="card">
+      <h2>Preferencje</h2>
+      <label class="check" for="opt-personalize">
+        <input id="opt-personalize" type="checkbox">
+        <span>Dopasowuj wyniki do moich poprzednich wyszukiwań i ulubionych</span>
+      </label>
+      <p class="hint">Gdy ta opcja jest włączona, ostatnie opisy i ulubione produkty są wysyłane razem z wyszukiwaniem, a AI może dołożyć propozycje oznaczone „Wynika z Twoich preferencji”.</p>
+      <div class="actions">
+        <button class="btn secondary" id="clearHistory" type="button">Wyczyść historię wyszukiwań</button>
+        <span class="hint" id="historyInfo" role="status"></span>
+      </div>
+    </div>
+
+    <p class="hint">Profil, ulubione i historia są zapisane tylko w przeglądarce na tym urządzeniu. Jeśli korzystasz z ikony na ekranie początkowym, używaj jej zawsze, bo ma osobną pamięć niż Safari.</p>
+  </section>
 </main>
 <script src="/app.js"></script>
 </body>
